@@ -1,0 +1,18 @@
+{% extends 'home.html' %}
+{% block content %}
+{% for quiz in quizs %}
+    <div class="quiz_card">
+        {% if quiz.pic %}
+            <img src="{{ quiz.pic.url }}" alt="{{ quiz.title }}" class=""/>
+        {% else %}
+            <p>No image</p>
+        {% endif %}
+        <h2>{{ quiz.title }}</h2>
+        <p>{{ quiz.description }}</p>
+        <a href="{% url 'take_quiz' quiz.id %}" class="quiz_btn dly_btn">Take Quiz</a>
+    </div>
+{% empty %}
+    <p>No quizzes available at the moment. Please check back later.</p>
+{% endfor %}
+
+{% endblock content %}

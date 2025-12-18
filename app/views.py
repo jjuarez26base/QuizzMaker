@@ -40,3 +40,8 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def quiz_list(requst):
+    quizs = models.Quizzes.objects.all()
+    context = {"quizs": quizs}
+    return render(requst, "Quizs/all_quizzes.html", context)
