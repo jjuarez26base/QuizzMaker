@@ -5,9 +5,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', landing_page_view, name='landing page'),
+    path('home', home, name='home'),
     path('Signup/', signup_view, name='signup'),
     path('Login/', login_view, name='login'),
     path('Logout/', logout_view, name='logout'),
-    path('Quizs', quiz_list, name='quizs')
+    path('Quizs', quiz_list, name='quizs'),
+    path('ProfilePage/', userprofile, name='profile'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

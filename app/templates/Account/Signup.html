@@ -1,21 +1,38 @@
 {% extends 'home.html' %}
 {% block content %}
-<div class="account_card">
-    <h1>Signup</h1>
-    <form  method="post">
-        {% csrf_token %}
-        <h2>Username</h2>
-        {{ form.username }}
+    <div class="account_card">
+        <h1>Signup</h1>
+        <form  method="POST">
+            {% csrf_token %}
+            <div>
+                <h2>Username</h2>
+                {% if form.username.errors %}
+                    <p>Theres a problem with your Username:</p>
+                    <ul>
+                        {% for error in form.username.errors %}
+                            <li>{{error}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <p>{{ form.username}}</p>
+                <h2>Password</h2>
+                {% if form.password2.errors %}
+                    {% if form.password2.errors %}
+                        <p>Theres a problem with your Password:</p>
+                        <ul>
+                            {% for error in form.password2.errors %}
+                                <li>{{error}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}  
+                <p>{{ form.password1}}</p>
 
-        <h2>Password</h2>
-        {{ form.password1 }}
+                <h2>Confirm Password</h2>
+                <p>{{ form.password2}}</p>
 
-        <h2>Confirm Password</h2>
-        {{ form.password2 }}
-
-        <button type="submit" class="">Submit</button>
-        
-    </form>
-    
-</div>
+                <button type="submit" class="">Submit</button>            
+            </div>
+        </form>
+    </div>
 {% endblock content %}

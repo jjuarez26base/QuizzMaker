@@ -8,27 +8,26 @@ class Tags(models.Model):
     def __str__(self):
         return self.name
     
-    
-class Questions(models.Model):
-    title= models.CharField(max_length=300)
-    pic = models.ImageField(upload_to='images/', blank=True, null=True)
-    time = models.IntegerField()
-    q1 = models.CharField(max_length=250, default=False)
-    q2 = models.CharField(max_length=250, default=False)
-    q3 = models.CharField(max_length=250, default=False)
-    q4 = models.CharField(max_length=250, default=False) 
-    
 class Quizzes(models.Model):
     title = models.CharField(max_length=200)
     pic = models.ImageField(upload_to='images/', blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    questions = models.ForeignKey(Questions, on_delete=models.CASCADE, related_name='quizzes')
+    # questions = models.ForeignKey(Questions, on_delete=models.CASCADE, related_name='quizzes')
     tags = models.ManyToManyField(Tags, related_name='quizzes')
 
     def __str__(self):
         return self.title
     
+class Questions(models.Model):
+    quiz = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
+    question = models.CharField(max_length=250)
+
+class Choice(models.Model):
+    question = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     quizzes = models.ForeignKey(Quizzes, on_delete=models.CASCADE, related_name='user_profiles', blank=True, null=True)

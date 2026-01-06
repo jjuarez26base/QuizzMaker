@@ -112,6 +112,7 @@ ul li {
   background-color: #2d2c2c;
   border-radius: 10px 10px 0 0;
   margin-left: 15px;
+  
 }
 
 .name {
@@ -132,7 +133,32 @@ ul li {
 }
 
 .pic {
-  width: 250px;
+  display: flex;
+  width: auto;
+  height: 173px;
+  object-fit: contain;
+  justify-self: center;
+  max-width: 250px;
+  margin-right: 0px;
+}
+
+.logo_img {
+  display: flex;
+  width: 500px;
+  object-fit: contain;
+  justify-self: center;
+  max-width: 250px;
+  margin-right: 0px;
+}
+
+.intro{
+  display: grid;
+  place-items: center;
+  height: 100%;
+}
+.intro_p {
+  display: flex;
+  justify-self: center;
 }
 
 .tag-box {
@@ -158,6 +184,7 @@ ul li {
   font-size: 14px;
   white-space: nowrap;
   text-decoration: none;
+  height: fit-content;
 }
 
 .gamebtn {
@@ -229,4 +256,17 @@ ul li {
 /* Scrollbar */
 ::-webkit-scrollbar {
   display: none;
+}
+
+.bar{
+  position: absolute;
+  top: 0;
+  display: block;
+  justify-items: center;
+  background-color: #00022E;
+  width: 100%;
+  height: 60px;
+}
+.down{
+  margin-top: 20px;
 }

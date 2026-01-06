@@ -1,15 +1,22 @@
 {% extends 'home.html' %}
 {% block content %}
-
-<div class="account_card">
-    <h1>Login</h1>
-    <form  method="post">
-        {% csrf_token %}
-        <h2>Username</h2>
-        {{ form.username }}
-        <h2>Password</h2>
-        {{ form.password }}
-        <button type="submit" class="account_btn dly_btn">Submit</button>
-    </form>
-</div>
+    <div class="account_card">
+        <h1>Login</h1>
+        <form  method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <h2>Couldn't Log In</h2>
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <h2>Username</h2>
+            {{ form.username }}
+            <h2>Password</h2>
+            {{ form.password }}
+            <button type="submit" class="account_btn dly_btn">Submit</button>
+        </form>
+    </div>
 {% endblock content %}

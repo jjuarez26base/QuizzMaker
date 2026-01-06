@@ -19,13 +19,14 @@
 
 <aside>
   <nav class="controls nav">
-    <img src="{% if info.pic %}{{ info.pic.url }}{% else %}{% static 'images/profile.png' %}{% endif %}" alt="Profile Picture" class="profile-pic">
+    <img src="{% if user_profile.pic %}{{ user_profile.pic.url }}{% else %}{% static 'images/profile.png' %}{% endif %}" alt="Profile Picture" class="profile-pic">
     <p class="username">{{user.username}}</p>
-    <p class="points">Points: {{info.points}}</p>
-    
+    <p class="points">Points: {{user_profile.points}}</p>
+    {% if user.id != None %}
     <li class="place"><a class="home" href="{% url 'home' %}">Home</a></li>
-    <li class="place"><a class="elseM" href="{% url 'signup' %}">SignUp</a></li>
+    {% endif %}
     {% if user.id == None %}
+    <li class="place"><a class="elseM" href="{% url 'signup' %}">SignUp</a></li>
     <li class="place"><a class="elseM" href="{% url 'login' %}">Login</a></li>
     {% else %}
     <li class="place"><a class="elseM" href="{% url 'logout' %}">Logout</a></li>
@@ -36,6 +37,8 @@
   </nav>
 </aside> 
         <div class="container">
+          <br>
+          <br>
             {% block content %}
             {% endblock content %}
 
@@ -44,4 +47,7 @@
             {% endfor %} -->
             <script type="module" src="{% static 'JS/script.js' %}"></script>
     </body>
+
+    
+
 </html>
