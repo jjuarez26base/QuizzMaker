@@ -1,4 +1,14 @@
 {% extends 'home.html' %}
 {% block content %}
 
+
+<form method="post">
+    {% csrf_token %}
+    {% for question in questions %}
+    <h2>{{ question.question }}</h2>
+    {% for choice in question.choice_set.all %}
+    <button type="submit" value="choice.id">{{ choice.text }}</button>
+    {% endfor %} 
+    {% endfor %} 
+</form>
 {% endblock content %}

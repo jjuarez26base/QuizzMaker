@@ -12,5 +12,7 @@ urlpatterns = [
     path('Logout/', logout_view, name='logout'),
     path('Quizs', quiz_list, name='quizs'),
     path('ProfilePage/', userprofile, name='profile'),
+    path('Quiz/play/<int:quiz_id>/', play_view, name='play'),
+    path('QuizMaker/', quizmaker_view, name='quiz maker'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

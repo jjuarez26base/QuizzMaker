@@ -1,0 +1,25 @@
+{% extends 'home.html' %}
+{% block content %}
+    <br>
+    {{request}}
+    <br>
+    {{type}}
+    <br>
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        <h3>Name of Quiz</h3>
+        {% csrf_token %}
+        <p>{{form.title}}</p>
+        <br>
+        <h3>Choose a Picture</h3>
+        <p>{{form.pic}}</p>
+        <br>
+        <h3>Choose Tags</h3>
+        <p>{{form.tags}}</p>
+        <br>
+        <p hidden>{{form.owner}}</p>
+        <br>
+        
+        <button type="submit">Create Quiz</button>
+    </form>
+{% endblock content %}

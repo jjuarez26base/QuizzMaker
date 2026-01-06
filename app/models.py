@@ -13,7 +13,6 @@ class Quizzes(models.Model):
     pic = models.ImageField(upload_to='images/', blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    # questions = models.ForeignKey(Questions, on_delete=models.CASCADE, related_name='quizzes')
     tags = models.ManyToManyField(Tags, related_name='quizzes')
 
     def __str__(self):

@@ -1,11 +1,12 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from . import forms 
+from . import forms
 from . import models
+from app.forms import *
+from app.models import *
 
 # Create your views here.
 def landing_page_view(request: HttpRequest) -> HttpResponse:
@@ -15,7 +16,7 @@ def landing_page_view(request: HttpRequest) -> HttpResponse:
 @login_required(login_url='login')
 def home(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
-        user_profile = models.UserProfile.objects.get(user=request.user)
+        user_profile = UserProfile.objects.get(user=request.user)
         context = {"user_profile": user_profile}
     else:
         context = {}
@@ -26,14 +27,14 @@ def signup_view(request: HttpRequest) -> HttpResponse:
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            models.UserProfile.objects.create(user=user)
+            UserProfile.objects.create(user=user)
             login(request, user)
             return redirect('home') 
     else:
         form = UserCreationForm()
     context = { 'form': form }
     if request.user.is_authenticated:
-        info = models.UserProfile.objects.get(user=request.user)
+        info = UserProfile.objects.get(user=request.user)
         context["info"] = info
     return render(request, 'Account/Signup.html', context)
 
@@ -57,13 +58,46 @@ def logout_view(request: HttpRequest) -> HttpResponse:
 
 def quiz_list(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
-      user_profile = models.UserProfile.objects.get(user=request.user)
+      user_profile = UserProfile.objects.get(user=request.user)
     else:
       user_profile = 'no user profile'
-    quizs = models.Quizzes.objects.all()
+    quizs = Quizzes.objects.all()
     context = {"quizs": quizs, "user_profile": user_profile}
     return render(request, "Quizs/all_quizzes.html", context)
 
+def play_view(request: HttpRequest, quiz_id) -> HttpResponse:
+    if request.method == 'POST':
+        questcount = 0
+        quiz = Quizzes.objects.get(id=quiz_id)
+        questions = Questions.objects.filter(quiz=quiz)
+       
+    context = {"quiz": quiz, "questions": questions}
+    return render(request, "Quizs/play.html", context)
+       
+@login_required(login_url='login')
+def userprofile(request: HttpRequest) -> HttpResponse:
+    user_profile = UserProfile.objects.get(user=request.user)
+    user_quizzes = Quizzes.objects.filter(owner=request.user)
+    context = {
+        "user_profile": user_profile,
+        "user_quizzes": user_quizzes
+    }
+    return render(request, 'ProfilePage.html', context)
 
-#def userprofile(request: HttpRequest) -> HttpResponse:
-    #user_to_view = get_object_or_404(User, username=request.user)
+@login_required(login_url='login')
+def quizmaker_view(request: HttpRequest) -> HttpResponse:
+    if request.method == 'GET':
+        form = MakeQuizForm(initial={'owner': request.user})
+        context = {'request': request, "type": 'A get request', 'form': form}
+    elif request.method == 'POST':
+        form = MakeQuizForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            context = {'request': request.POST, "type": 'Quiz was made', 'form': form}
+            redirect('profile')
+        else:
+            context = {'request': request, "type": 'Failed to make Quiz', 'form': form}
+            return render(request, "Quizs/quiz_maker.html", context)
+    else:
+        context = {'request': 'none', "type": 'No request'}
+    return render(request, "Quizs/quiz_maker.html", context)

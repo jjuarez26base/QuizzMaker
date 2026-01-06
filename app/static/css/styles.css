@@ -16,8 +16,15 @@ aside {
   z-index: 1000;
   text-align: center;
   border-radius: 0 20px 20px 0;
+  border: 2px solid black;
 }
-
+.logo{
+  position: absolute;
+  width: 40px;
+  height: 60px;
+  top: 0;
+  right: 10px;
+}
 aside.hidden {
   left: 0;
 }
@@ -269,4 +276,86 @@ ul li {
 }
 .down{
   margin-top: 20px;
+}
+
+
+/*Profile*/
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto; 
+  padding: 20px; 
+  font-family: sans-serif;
+}
+.profile-header {
+  display: flex; 
+  align-items: center; 
+  gap: 20px; 
+  border-bottom: 2px solid #eee; 
+  padding-bottom: 20px;
+}
+.profile-pic2{
+  margin: auto;
+}
+.profile-picture {
+  width: 150px; 
+  height: 150px; 
+  border-radius: 50%; 
+  object-fit: cover;
+}
+.no-profile-pic {
+  width: 150px; 
+  height: 150px; 
+  border-radius: 50%; 
+  background: #ddd; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+.textpic {
+  display: flex;
+  margin: 0;
+  
+}
+.username-points {
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.profile-h1 {
+  margin: 0;
+}
+.profile-bio {
+  border: 2px solid #ccc;
+  padding: 7px;
+  border-radius: 8px;
+}
+.profile-p1 {
+  color: #666; 
+  font-size: 1.1rem;
+}
+.profile-p2 {
+  margin-top: 10px;
+}
+.user-quizzes {
+  margin-top: 30px;
+}
+.profile-my-quizzes {
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+  gap: 15px;
+}
+.quiz-card {
+  border: 1px solid #ddd; 
+  padding: 10px; 
+  border-radius: 8px;
+}
+.profile-quizzez-pic {
+  width: 100%; 
+  height: 100px; 
+  object-fit: cover; 
+  border-radius: 4px;
+}
+.profile-h4 {
+  margin: 10px 0 5px 0;
 }

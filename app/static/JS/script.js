@@ -9,3 +9,7 @@ const toggleSidebar = () => {
 }
 
 menuButton.addEventListener('click', toggleSidebar);
+
+function ToEditQuizPage() {
+    console.log('This function does nothing right now.')
+  };

@@ -1,5 +1,45 @@
 {% extends 'home.html' %}
 {% block content %}
+<div class="profile-container" >
+    
+    <div class="profile-header">
+        <div class="profile-pic2">
+            {% if user_profile.pic %}
+                <img src="{{ user_profile.pic.url }}" alt="Profile Picture" class="profile-picture">
+            {% else %}
+                <div class="no-profile-pic">
+                    No Image
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="profile-info">
+            <div class="username-points">
+                <h1 class="profile-h1">{{ user_profile.user.username }}</h1>
+                <p class="profile-p1"><strong>Points:</strong> {{ user_profile.points }}</p>
+            </div>
+            <div class="profile-bio">
+                <p class="profile-p2"><strong>Bio:</strong> {{ user_profile.bio|default:"No bio added yet." }}</p>
+            </div>
+            
+        </div>    
+    </div>
 
-
+    <div class="user-quizzes">
+        <h3>My Quizzes</h3>
+        <div class="profile-my-quizzes">
+            {% for quiz in user_quizzes %}
+                <div class="quiz-card">
+                    {% if quiz.pic %}
+                        <img src="{{ quiz.pic.url }}" class="profile-quizzez-pic">
+                    {% endif %}
+                    <h4 class="profile-h4">{{ quiz.title }}</h4>
+                    <small>Created: {{ quiz.created_at|date:"M d, Y" }}</small>
+                </div>
+            {% empty %}
+                <p>You haven't created any quizzes yet!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock content %}
