@@ -28,7 +28,7 @@
                                     <span class="tag">Untagged</span>
                                 {% endfor %}
                             </div>
-                            <form method="post" action="{% url 'play' quiz.id %}">
+                            <form method="post" action="{% url 'play' quiz.id 1 %}">
                                 {% csrf_token %}
                                 <button class="gamebtn"></button>
                             </form>
@@ -58,7 +58,7 @@
                                 <span class="tag">Untagged</span>
                             {% endfor %}
                         </div>
-                        <form method="post" action="{% url 'play' quiz.id %}">
+                        <form method="post" action="{% url 'play' quiz.id 1 %}">
                                 {% csrf_token %}
                                 <button class="gamebtn"></button>
                             </form>

@@ -7,8 +7,12 @@
     <br>
     <br>
     <form method="post" enctype="multipart/form-data">
-        <h3>Name of Quiz</h3>
         {% csrf_token %}
+        {% if form.errors %}
+            <h2>Errors:</h2>
+            <p>{{form.errors}}</p>
+        {% endif %}
+        <h3>Name of Quiz</h3>
         <p>{{form.title}}</p>
         <br>
         <h3>Choose a Picture</h3>
@@ -17,9 +21,25 @@
         <h3>Choose Tags</h3>
         <p>{{form.tags}}</p>
         <br>
-        <p hidden>{{form.owner}}</p>
+        <button id="AddQuestion" type="button">Add Question</button>
         <br>
-        
+        <div id="questionsContainer">
+            {% if type != 'Failed to make Quiz' %}
+            <div class="quiz_maker_question">
+                <h3>Question 1</h3>
+                <p>Question: <input required id="question_1" name="question_1" type="text"></p>
+                <p>Answer 1: <input required id="question_1answer1" name="question_1answer1" type="text"> Correct:<input id="question_1answer1checkbox" name="question_1answer1checkbox" value="correct" type="checkbox"></p>
+                <p>Answer 2: <input required id="question_1answer2" name="question_1answer2" type="text"> Correct:<input id="question_1answer2checkbox" name="question_1answer2checkbox" value="correct" type="checkbox"></p>
+                <p>Answer 3: <input required id="question_1answer3" name="question_1answer3" type="text"> Correct:<input id="question_1answer3checkbox" name="question_1answer3checkbox" value="correct" type="checkbox"></p>
+                <p>Answer 4: <input required id="question_1answer4" name="question_1answer4" type="text"> Correct:<input id="question_1answer4checkbox" name="question_1answer4checkbox" value="correct" type="checkbox"></p>
+            </div>
+            {% else %}
+                {% if type == 'Failed to make Quiz' %}
+                    
+                {% endif %}
+            {% endif %}
+        </div>
+        <br>
         <button type="submit">Create Quiz</button>
     </form>
 {% endblock content %}

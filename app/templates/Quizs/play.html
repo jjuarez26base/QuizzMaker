@@ -2,13 +2,20 @@
 {% block content %}
 
 
-<form method="post">
+{% if question %}
+  <h3>Question {{ question }} of {{ total }}</h3>
+  <form method="post">
     {% csrf_token %}
-    {% for question in questions %}
     <h2>{{ question.question }}</h2>
     {% for choice in question.choice_set.all %}
-    <button type="submit" value="choice.id">{{ choice.text }}</button>
-    {% endfor %} 
-    {% endfor %} 
-</form>
-{% endblock content %}
+      <button type="submit" name="choice_id" value="{{ choice.id }}">{{ choice.text }}</button>
+    {% endfor %}
+  </form>
+{% else %}
+  <h2>Quiz complete!</h2>
+  <p>Your score: {{ score }} out of {{ outof }}</p>
+  <p>Correct answers: {{ right_answered }} / {{ total }}</p>
+  <a href="{% url 'quizs' %}">Back to quizzes</a>
+{% endif %}
+
+{% endblock %}
