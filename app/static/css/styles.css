@@ -3,6 +3,9 @@
   color: white;
   --transition-duration: 0.4s;
 }
+body {
+  margin: 0;
+}
 
 /* Sidebar */
 aside {
@@ -305,15 +308,20 @@ ul li {
   flex-shrink: 0;
 }*/
 .profile-pic2 {
-  /* REMOVE position: absolute and the large margins */
   margin: 0; 
-  flex-shrink: 0;      /* Keeps the circle from shrinking on smaller screens */
+  flex-shrink: 0;/* Keeps the circle from shrinking on smaller screens */
 }
 .profile-picture {
   width: 220px; 
   height: 220px; 
   border-radius: 50%; 
   object-fit: cover;
+}
+.delete{
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  
 }
 .no-profile-pic {
   width: 220px; 
@@ -339,7 +347,7 @@ ul li {
 .profile-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;          /* Adds consistent spacing between the name box and bio box */
+  gap: 10px;/* Adds consistent spacing between the name box and bio box */
   flex-grow: 1;
 }
 .username-points {
@@ -385,4 +393,81 @@ ul li {
 }
 .profile-h4 {
   margin: 10px 0 5px 0;
+}
+
+/* Admin Page */
+
+.admin-privilege {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border: 4px ridge rgb(42, 42, 42);
+  padding: 30px;
+  
+  border-radius: 10px;
+  /*
+  flex-grow: 1;
+  width: 25%;
+  */
+}
+.admin-h2 {
+  margin: auto;
+  margin-bottom: 10px;
+}
+.admin-tbody {
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+  gap: 15px;
+}
+.admin-users {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.admin-form {
+  margin-top: 10px;
+}
+
+/* Delete button positioning at top right */
+.delete-form-top-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+}
+
+.delete-btn-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+/* Make quiz cards position relative so absolute positioning works */
+.quiz-card {
+  position: relative;
+}
+
+.box {
+  position: relative;
+}
+
+.endofquiz {
+  display: block;
+  justify-self: center;
+  justify-items: center;
+  align-self: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 75vw;
+  height: 50vh;
+  max-height: 300px;
 }

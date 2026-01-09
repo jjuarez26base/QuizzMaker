@@ -22,10 +22,16 @@ class Questions(models.Model):
     quiz = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
     question = models.CharField(max_length=250)
 
+    def __str__(self):
+        return self.question
+
 class Choice(models.Model):
     question = models.ForeignKey(Questions, on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
     is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.text}'
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -36,3 +42,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f'User: {self.user.username} Points: {self.points}'
+    
+class UserQuizAttempt(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0, null=True)
+    is_right = models.IntegerField(default=0)
+    attempt = models.IntegerField(default=1)
+    is_completed = models.BooleanField(default=False)

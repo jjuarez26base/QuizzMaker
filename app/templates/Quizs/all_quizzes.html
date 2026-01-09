@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="bar">
-    search bar holder
+    <input type="search" id="quiz-search" class="quiz-search-input" placeholder="Search quizzes...">
 </div>
     <div class="down">
         <div class="boxgrid">
@@ -28,12 +28,15 @@
                                     <span class="tag">Untagged</span>
                                 {% endfor %}
                             </div>
-                            <form method="post" action="{% url 'play' quiz.id 1 %}">
+                            <form method="post" action="{% url 'play' quiz.id 0 %}">
                                 {% csrf_token %}
                                 <button class="gamebtn"></button>
                             </form>
                             <p class="btnt">Play</p>
-                            <button class="deletebtn"></button>
+                            <form method="post" action="{% url 'delete quiz' quiz.id %}">
+                                {% csrf_token %}
+                                <button class="deletebtn"></button>
+                            </form>
                             <p class="delt">Delete</p>
                         </div>
                     </div>
@@ -58,7 +61,7 @@
                                 <span class="tag">Untagged</span>
                             {% endfor %}
                         </div>
-                        <form method="post" action="{% url 'play' quiz.id 1 %}">
+                        <form method="post" action="{% url 'play' quiz.id 0 %}">
                                 {% csrf_token %}
                                 <button class="gamebtn"></button>
                             </form>

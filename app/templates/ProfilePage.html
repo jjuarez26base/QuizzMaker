@@ -1,4 +1,5 @@
 {% extends 'home.html' %}
+{% load static %}
 {% block content %}
 <div class="profile-container" >
     
@@ -30,8 +31,13 @@
         <div class="profile-my-quizzes">
             {% for quiz in user_quizzes %}
                 <div class="quiz-card">
+                    <form action="{% url 'delete quiz' quiz.id %}" method="post" class="delete-form-top-right">
+                        {% csrf_token %}
+                        <input type="image" src="{% static 'images/Red_X.png' %}" alt="Delete" class="delete-btn-icon">
+                    </form>
                     {% if quiz.pic %}
                         <img src="{{ quiz.pic.url }}" class="profile-quizzez-pic">
+                        
                     {% endif %}
                     <h4 class="profile-h4">{{ quiz.title }}</h4>
                     <small>Created: {{ quiz.created_at|date:"M d, Y" }}</small>

@@ -3,8 +3,8 @@
 
 
 {% if question %}
-  <h3>Question {{ question }} of {{ total }}</h3>
-  <form method="post">
+  <h3>Question {{ current }} of {{ total }}</h3>
+  <form method="post" action="{% url 'playchoice' quiz.id %}">
     {% csrf_token %}
     <h2>{{ question.question }}</h2>
     {% for choice in question.choice_set.all %}
@@ -12,10 +12,12 @@
     {% endfor %}
   </form>
 {% else %}
-  <h2>Quiz complete!</h2>
-  <p>Your score: {{ score }} out of {{ outof }}</p>
-  <p>Correct answers: {{ right_answered }} / {{ total }}</p>
-  <a href="{% url 'quizs' %}">Back to quizzes</a>
+  <div class="endofquiz">
+    <h2>Quiz complete!</h2>
+    <p>Your score: {{ score }} out of {{ outof }}</p>
+    <p>Correct answers: {{ right_answered }} / {{ total }}</p>
+    <a href="{% url 'quizs' %}">Back to quizzes</a>
+  </div>
 {% endif %}
 
 {% endblock %}

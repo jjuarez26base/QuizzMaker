@@ -10,11 +10,13 @@
                     <p>Theres a problem with your Username:</p>
                     <ul>
                         {% for error in form.username.errors %}
-                            <li>{{error}}</li>
+                            <li>{{error}} Your name can only be 10 characters</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
-                <p>{{ form.username}}</p>
+                
+                    {{form.username}}
+                
                 <h2>Password</h2>
                 {% if form.password2.errors %}
                     {% if form.password2.errors %}

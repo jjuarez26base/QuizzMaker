@@ -1,0 +1,65 @@
+{% extends 'home.html' %}
+{%load static%}
+{% block content %}
+<div class="profile-container">
+    <h2>Site Administration Dashboard</h2>
+    <hr>
+    
+    <div class="username-points">
+        <h3>Quick Stats</h3>
+        <p><strong>Total Registered Users:</strong> {{ total_users }}</p>
+        <p><strong>Total Quizzes Created:</strong> {{ total_quizzes }}</p>
+    </div>
+
+    <div class="admin-privilege">
+        <h2 class="admin-h2">Users</h2>
+        <div class="admin-tbody">
+            <tbody>
+                {% for u in all_users %}
+                <tr style="height: 40px; border-bottom: 1px solid #444;">
+                    <div class="admin-users">
+                            <td class="admin-td">{{ u.username }}:</td>
+                        <td class="admin-td2">
+                            {% if u.is_active %} 
+                            <span style="color: #04AA6D;">Active</span> 
+                            {% else %} 
+                            <span style="color: #800020;">Inactive</span> 
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="chips" value="{{ u.id }}">
+                                <button type="submit" class="tag" style="border: none; cursor: pointer;">
+                                    {% if u.is_active %} Deactivate {% else %} Activate {% endif %}
+                                </button>
+                            </form>
+                        </td>
+                    </div>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </div>
+    </div>
+
+    <div class="user-quizzes">
+        <h3>Recently Created Quizzes</h3>
+        <div class="profile-my-quizzes">
+            {% for quiz in recent_quizzes %}
+                <div class="quiz-card">
+                    <h4 class="profile-h4">{{ quiz.title }}</h4>
+                    <p>Owner: {{ quiz.owner.username }}</p>
+                    <small>Created: {{ quiz.created_at|date:"M d, Y" }}</small>
+                    <form class="admin-form" action="{% url 'admin delete' quiz.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="admin-deletebtn" onclick="return confirm('Delete this quiz permanently?')">
+                            <span class="admin-delt">Delete Quiz</span>
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
