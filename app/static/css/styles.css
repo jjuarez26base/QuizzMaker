@@ -3,8 +3,12 @@
   color: white;
   --transition-duration: 0.4s;
 }
-body {
+body,html {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Sidebar */
@@ -47,6 +51,19 @@ aside.hidden {
   cursor: pointer;
   border: none;
   background: none;
+}
+.cleanbtn {
+  position: absolute;
+  display: block;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 75px;
+  top: 15px;
+  right: 0;
+}
+.hiddenornot{
+  display: none;
 }
 
 .menuIcon {
@@ -113,7 +130,7 @@ ul li {
 .box {
   position: relative;
   width: 250px;
-  margin-left: 15px;
+  margin-right: 15px;
   margin-bottom: 10px;
 }
 
@@ -121,7 +138,7 @@ ul li {
   width: 250px;
   background-color: #2d2c2c;
   border-radius: 10px 10px 0 0;
-  margin-left: 15px;
+  margin-right: 15px;
   
 }
 
@@ -188,7 +205,23 @@ ul li {
   bottom: 12%;
   scrollbar-width: none;
 }
+.tagotherbox {
+  text-align: center;
+  width: 240px;
 
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+ 
+  
+  scrollbar-width: none;
+}
+.newquizbtn{
+  display: block;
+  justify-self: center;
+}
 .tag {
   background: gray;
   padding: 4px 8px;
@@ -344,6 +377,11 @@ ul li {
   margin-left: 650px;
   gap: 10px;
 }*/
+
+.bio-form{
+  display: none;
+}
+
 .profile-info {
   display: flex;
   flex-direction: column;
@@ -360,10 +398,20 @@ ul li {
   margin: 0;
 }
 .profile-bio {
+  position: relative;
   border: 2px solid #ccc;
   padding: 7px;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.05);
+}
+.bioedit{
+  top: 0;    
+  left: 0;  
+  z-index: 999; 
+  position: relative;
+
+  width: 50px;
+  height: 50px;
 }
 .profile-p1 {
   color: #666; 
@@ -476,4 +524,123 @@ ul li {
 
 /* Base Page Styling (Ensures the app fills the screen) */
 
+.body{
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+
+.qustplay{
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.question-section {
+  flex: 1; /* Takes up 50% of vertical space */
+  background-color:  #2d2c2c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.quest {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0;
+}
+
+.score {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.choice-grid {
+  flex: 1; /* Takes up the remaining 50% of vertical space */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columns */
+  grid-template-rows: 1fr 1fr; /* 2 rows */
+  gap: 0px; /* No space between buttons */
+  background-color: white; /* Ensures whole bottom is white */
+}
+
+.choice-button[type="submit"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #eee; /* Very subtle thin border */
+  border-top: none;
+  border-left: none;
+  padding: 10px;
+  font-size: 1rem;
+  color: black;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.choice-button[type="submit"]:hover {
+  background-color: #f0f0f0;
+}
+
+
+.choice-button[type="submit"]:active {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 600px) {
+  .choice-grid {
+    grid-template-columns: 1fr; /* Stack vertically on smaller screens */
+    grid-template-rows: repeat(4, 1fr);
+    }
+    .choice-button[type="submit"] {
+      border-bottom: 1px solid #eee; /* Add bottom border when stacked */
+      border-right: none;
+    }
+  
+}
+/* _________________________________________________________________________________________________ */
+
+
+.questBox{
+  width: fit-content;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 10px 30px;
+}
+.center{
+  display: block;
+  justify-self: center;
+}
+
+.quizbox{
+  justify-self: center;
+  border: 2px solid white;
+  text-align: center;
+  border-radius: 10px;
+  padding: 15px;
+  /* width: ; */
+;
+}
+
+.picfile input{
+  width: 91px;
+}
 

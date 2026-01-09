@@ -1,0 +1,11 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+<h2>Update Page</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Profile</button>
+</form>
+
+{% endblock content %}

@@ -2,10 +2,10 @@
 {% load static %}
 {% block content %}
 <div class="bar">
-    <form method="" method="POST" action="{%url 'search' %}">
+    <form method="POST" action="{%url 'search' %}">
         {% csrf_token %}
         <input type="search" placeholder="Search by tags..." aria-label="Search" name="search" class="search-input">
-        <button class="create-quiz-btn" >Create New Quiz</button>
+        <button class="create-quiz-btn" type="submit" >Create New Quiz</button>
     </form>
 </div>
     <div class="down">
@@ -20,7 +20,7 @@
                             <div class="qbody">
                                 <form action="{% url 'quiz editor' %}" method="post" class="delete-form-top-right">
                                     {% csrf_token %}
-                                    <input hidden value="{{quiz.title}}" name="title">
+                                    <input hidden value="{{quiz.pk}}" name="pk">
                                     <input type="image" src="{% static '/images/editBTN.png'%}" alt="Edit" class="editbtn">
                                 </form>
                                 {% if quiz.pic %}
@@ -29,13 +29,10 @@
                                 <p class="textpic">No Image</p>
                                 {% endif %}
                             </div>
-                            <div class="tag-box">
-                                {% for tag in quiz.tags.all %}
-                                    <span class="tag">{{ tag.name }}</span>
-                                    {% empty %}
-                                    <span class="tag">Untagged</span>
-                                {% endfor %}
-                            </div>
+                    
+                            <p>{{quiz_form.tags}}</p>
+                            <br>
+                            
                             <form method="post" action="{% url 'play' quiz.id 0 %}">
                                 {% csrf_token %}
                                 <button class="gamebtn"></button>

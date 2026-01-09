@@ -4,28 +4,31 @@
 
 {% if question %}
   
-  <form method="post" action="{% url 'playchoice' quiz.id %}">
+<div class="body">
+  <form method="post" action="{% url 'playchoice' quiz.id %}" class="qustplay">
     {% csrf_token %}
 
     <div class="question-section">
-        <h3>Question {{ current }} of {{ total }}</h3>
-        <h2>{{ question.question }}</h2>
+        <h3 class="score">Question {{ current }} of {{ total }}</h3>
+        <h2 class="quest">{{ question.question }}</h2>
     </div>
 
     <div class="choice-grid">
         {% for choice in question.choice_set.all %}
-          <button type="submit" name="choice_id" value="{{ choice.id }}">
+          <button type="submit" name="choice_id" value="{{ choice.id }}" class="choice-button">
               {{ choice.text }}
           </button>
         {% endfor %}
     </div>
-</form>
+  </form>
+</div>
 {% else %}
   <div class="endofquiz">
     <h2>Quiz complete!</h2>
     <p>Your score: {{ score }} out of {{ outof }}</p>
     <p>Correct answers: {{ right_answered }} / {{ total }}</p>
     <a href="{% url 'quizs' %}">Back to quizzes</a>
+    <a href="{% url 'startover' quiz.id %}">Play Again</a>
   </div>
 {% endif %}
 

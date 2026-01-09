@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="bar">
-    <form method="" method="POST" action="{%url 'search' %}">
+    <form method="POST" action="{%url 'search' %}">
         {% csrf_token %}
         <input type="search" placeholder="Search by tags..." aria-label="search" name="search" class="search-input">
         <button class="create-quiz-btn" >Create New Quiz</button>

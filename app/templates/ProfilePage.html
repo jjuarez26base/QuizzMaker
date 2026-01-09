@@ -3,8 +3,16 @@
 {% block content %}
 <div class="profile-container" >
     
+    
+    <input type="image" src="{% static 'images/editBTN.png' %}" class="cleanbtn"/>
     <div class="profile-header">
+        
         <div class="profile-pic2">
+            <form action="{% url 'newbio' %}" method="POST" enctype="multipart/form-data" class="hiddenornot">
+            {% csrf_token %}
+                {{form}}
+                <button type="submit">Save Bio</button>
+            </form>
             {% if user_profile.pic %}
                 <img src="{{ user_profile.pic.url }}" alt="Profile Picture" class="profile-picture">
             {% else %}
@@ -17,12 +25,17 @@
         <div class="profile-info">
             <div class="username-points">
                 <h1 class="profile-h1">{{ user_profile.user.username }}</h1>
-                <p class="profile-p1"><strong>Points:</strong> {{ user_profile.points }}</p>
+                <div class="points-box">
+
+                    
+                    <p class="profile-p1"><strong>Points:</strong> {{ user_profile.points }}</p>
+                </div>
             </div>
+                
             <div class="profile-bio">
+                    
                 <p class="profile-p2"><strong>Bio:</strong> {{ user_profile.bio|default:"No bio added yet." }}</p>
             </div>
-            
         </div>    
     </div>
 

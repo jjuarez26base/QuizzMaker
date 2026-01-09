@@ -13,6 +13,10 @@ class CreatUser(UserCreationForm):
         self.fields['username'].max_length = 10
         self.fields['username'].widget.attrs['maxlength'] = 10
 
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['pic', 'bio'] 
 
 class MakeQuizForm(forms.ModelForm):
     class Meta:
@@ -33,3 +37,17 @@ class MakeChoiceForm(forms.ModelForm):
         model = Choice
         fields = ['question', 'text', 'is_correct']
 
+class EditQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Questions
+        fields = ['question']
+
+class EditChoiceForm(forms.ModelForm):
+    class Meta:
+        model = Choice
+        fields = ['text', 'is_correct']
+
+class EditQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quizzes
+        fields = ['title', 'pic', 'tags']
