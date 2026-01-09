@@ -2,7 +2,11 @@
 {% load static %}
 {% block content %}
 <div class="bar">
-    <input type="search" id="quiz-search" class="quiz-search-input" placeholder="Search quizzes...">
+    <form method="" method="POST" action="{%url 'search' %}">
+        {% csrf_token %}
+        <input type="search" placeholder="Search by tags..." aria-label="Search" name="search" class="search-input">
+        <button class="create-quiz-btn" >Create New Quiz</button>
+    </form>
 </div>
     <div class="down">
         <div class="boxgrid">
@@ -14,7 +18,11 @@
                         </div>
                         <div class="box">
                             <div class="qbody">
-                                <img src="{% static '/images/editBTN.png'%}" class="editbtn" onclick="ToEditQuizPage()">
+                                <form action="{% url 'quiz editor' %}" method="post" class="delete-form-top-right">
+                                    {% csrf_token %}
+                                    <input hidden value="{{quiz.title}}" name="title">
+                                    <input type="image" src="{% static '/images/editBTN.png'%}" alt="Edit" class="editbtn">
+                                </form>
                                 {% if quiz.pic %}
                                 <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
                                 {% else %}

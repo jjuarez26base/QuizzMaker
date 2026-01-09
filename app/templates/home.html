@@ -36,6 +36,7 @@
     {% endif %}
     <li class="place"><a class="elseM" href="{% url 'quizs' %}">Quizzes</a></li>
     <li class="place"><a class="elseM" href="{% url 'quiz maker' %}">Make Quiz</a></li>
+    <li class="place"><a class="elseM" href="{% url 'quiz editor' %}">Edit Quizzes</a></li>
     {% if user.is_staff %}
     <li class="place"><a class="elseM" href="{% url 'admin' %}">Admin</a></li>
     {% endif %}

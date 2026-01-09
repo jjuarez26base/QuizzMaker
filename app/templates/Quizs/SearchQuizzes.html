@@ -1,0 +1,86 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+<div class="bar">
+    <form method="" method="POST" action="{%url 'search' %}">
+        {% csrf_token %}
+        <input type="search" placeholder="Search by tags..." aria-label="search" name="search" class="search-input">
+        <button class="create-quiz-btn" >Create New Quiz</button>
+    </form>
+</div>
+    {% if searched %}
+        <h2 class="search-results-heading">Search Results for "{{ search_query }}"</h2>
+            <div class="down">
+                <div class="boxgrid">
+                    {% for quiz in quizs %}
+                    {% if quiz.owner == user %}
+                            <div class="box">
+                                <div class="qname">
+                                    <h1 class="name">{{quiz.title}}</h1>
+                                </div>
+                                <div class="box">
+                                    <div class="qbody">
+                                        <img src="{% static '/images/editBTN.png'%}" class="editbtn" onclick="ToEditQuizPage()">
+                                        {% if quiz.pic %}
+                                        <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
+                                        {% else %}
+                                        <p class="textpic">No Image</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="tag-box">
+                                        {% for tag in quiz.tags.all %}
+                                            <span class="tag">{{ tag.name }}</span>
+                                            {% empty %}
+                                            <span class="tag">Untagged</span>
+                                        {% endfor %}
+                                    </div>
+                                    <form method="post" action="{% url 'play' quiz.id 0 %}">
+                                        {% csrf_token %}
+                                        <button class="gamebtn"></button>
+                                    </form>
+                                    <p class="btnt">Play</p>
+                                    <form method="post" action="{% url 'delete quiz' quiz.id %}">
+                                        {% csrf_token %}
+                                        <button class="deletebtn"></button>
+                                    </form>
+                                    <p class="delt">Delete</p>
+                                </div>
+                            </div>
+                        
+                    {% else %}
+                        <div class="box">
+                            <div class="qname">
+                                <h1 class="name">{{quiz.title}}</h1>
+                            </div>
+                            <div class="box">
+                                <div class="qbody">
+                                    {% if quiz.pic %}
+                                        <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
+                                        {% else %}
+                                        <p class="textpic">No Image</p>
+                                        {% endif %}
+                                </div>
+                                <div class="tag-box">
+                                    {% for tag in quiz.tags.all %}
+                                        <span class="tag">{{ tag.name }}</span>
+                                        {% empty %}
+                                        <span class="tag">Untagged</span>
+                                    {% endfor %}
+                                </div>
+                                <form method="post" action="{% url 'play' quiz.id 0 %}">
+                                        {% csrf_token %}
+                                        <button class="gamebtn"></button>
+                                    </form>
+                                <p class="btnt">Play</p>
+                            </div>
+                        </div>
+                    {% endif%}
+                    {% empty %}
+                        <p>No quizzes available at the moment. Please check back later.</p>
+                    {% endfor %}
+                </div>
+            </div>
+    {% else %}
+        <h2 class="search-results-heading">No search performed yet.</h2>
+    {% endif %} 
+{% endblock content %}

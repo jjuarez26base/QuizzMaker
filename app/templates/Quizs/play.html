@@ -3,14 +3,23 @@
 
 
 {% if question %}
-  <h3>Question {{ current }} of {{ total }}</h3>
+  
   <form method="post" action="{% url 'playchoice' quiz.id %}">
     {% csrf_token %}
-    <h2>{{ question.question }}</h2>
-    {% for choice in question.choice_set.all %}
-      <button type="submit" name="choice_id" value="{{ choice.id }}">{{ choice.text }}</button>
-    {% endfor %}
-  </form>
+
+    <div class="question-section">
+        <h3>Question {{ current }} of {{ total }}</h3>
+        <h2>{{ question.question }}</h2>
+    </div>
+
+    <div class="choice-grid">
+        {% for choice in question.choice_set.all %}
+          <button type="submit" name="choice_id" value="{{ choice.id }}">
+              {{ choice.text }}
+          </button>
+        {% endfor %}
+    </div>
+</form>
 {% else %}
   <div class="endofquiz">
     <h2>Quiz complete!</h2>

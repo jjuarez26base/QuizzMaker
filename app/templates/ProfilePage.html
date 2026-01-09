@@ -31,8 +31,9 @@
         <div class="profile-my-quizzes">
             {% for quiz in user_quizzes %}
                 <div class="quiz-card">
-                    <form action="{% url 'delete quiz' quiz.id %}" method="post" class="delete-form-top-right">
+                    <form action="{% url 'profile' %}" method="post" class="delete-form-top-right">
                         {% csrf_token %}
+                        <input hidden name="delete_quiz" value="{{quiz.id}}">
                         <input type="image" src="{% static 'images/Red_X.png' %}" alt="Delete" class="delete-btn-icon">
                     </form>
                     {% if quiz.pic %}

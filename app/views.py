@@ -72,6 +72,12 @@ def quiz_list(request: HttpRequest) -> HttpResponse:
     context = {"quizs": quizs, "user_profile": user_profile,}
     return render(request, "Quizs/all_quizzes.html", context)
 
+def search_quiz(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        searched = request.POST['searched']
+        t
+
+
 @login_required(login_url='login')
 def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
     user_profile = UserProfile.objects.get(user=request.user)
@@ -157,13 +163,22 @@ def userprofile(request: HttpRequest) -> HttpResponse:
         "user_profile": user_profile,
         "user_quizzes": user_quizzes
     }
+    if request.method == 'POST':
+        try:
+            delete_quiz = request.POST['delete_quiz']
+            quizdel = Quizzes.objects.get(id=delete_quiz)
+            quizdel.delete()
+            return redirect('profile')
+        except:
+            pass
     return render(request, 'ProfilePage.html', context)
 
 @login_required(login_url='login')
 def quizmaker_view(request: HttpRequest) -> HttpResponse:
+    user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'GET':
         quiz_form = MakeQuizForm()
-        context = {'request': request, "type": 'A get request', 'quiz_form': quiz_form}
+        context = {'request': request, "type": 'A get request', 'quiz_form': quiz_form, 'user_profile': user_profile}
     elif request.method == 'POST':
         question_names = []
         question_answers_name = []
@@ -329,11 +344,12 @@ def quizmaker_view(request: HttpRequest) -> HttpResponse:
                                 choice_form.save()
                             else:
                                 forms_good = False
+                    return redirect('profile')
                 else:
                     forms_good = False
                 question_form_list.append(question_form)
         
-        context = {'request': question_form_list, "type": 'Quiz was made', 'quiz_form': quiz_form}
+        context = {'request': question_form_list, "type": 'Quiz was made', 'quiz_form': quiz_form, 'user_profile': user_profile}
         if forms_good == False:
             question_names = []
             question_answers_name = []
@@ -422,11 +438,46 @@ def quizmaker_view(request: HttpRequest) -> HttpResponse:
                     checkbox_4_index = 'wrong'
                     question_set.append(checkbox_4_index)
                 question_list.append(question_set)
-            context = {'request': question_list, "type": 'Failed to make Quiz', 'quiz_form': quiz_form}
+            context = {'request': question_list, "type": 'Failed to make Quiz', 'quiz_form': quiz_form, 'user_profile': user_profile}
             return render(request, "Quizs/quiz_maker.html", context)
     else:
-        context = {'request': 'none', "type": 'No request'}
+        context = {'request': 'none', "type": 'No request', 'user_profile': user_profile}
     return render(request, "Quizs/quiz_maker.html", context)
+
+@login_required(login_url='login')
+def quizeditor_view(request: HttpRequest) -> HttpResponse:
+    user_profile = UserProfile.objects.get(user=request.user)
+    user_quizzes = Quizzes.objects.filter(owner=request.user)
+    if request.method == 'GET':
+        quiz = 'none'
+    elif request.method == 'POST':
+        try:
+            specific_quiz_name = request.POST['title']
+        except:
+            delete_quiz = request.POST['delete_quiz']
+            quizdel = Quizzes.objects.get(id=delete_quiz)
+            quizdel.delete()
+            return redirect('quiz editor')
+        try:
+            specific_quiz = Quizzes.objects.get(title=specific_quiz_name)
+            if specific_quiz.owner == request.user:
+                quiz = specific_quiz
+            else:
+                quiz = 'none'            
+        except:
+            quiz = 'none'
+        if quiz != 'none':
+            quiz_form = MakeQuizForm(initial={'title': quiz.title, 'pic': quiz.pic, 'owner': quiz.owner, 'tags': quiz.tags.all()})
+            questions = Questions.objects.filter(quiz=quiz)
+            question_list = []
+            choices_list = []
+            for question in questions:
+                question_list.append(MakeQuestionForm(initial={'question': question.question}))
+                choices = Choice.objects.filter(question=question)
+                choices_list.append(choices)
+        info = [quiz, questions, choices_list]
+    context = {'request': info, 'specific_quiz': quiz, "user_profile": user_profile, "quizs": user_quizzes, 'quiz_form': quiz_form}
+    return render(request, 'Quizs/edit_quiz.html', context)
 
 @staff_member_required
 def admin_view(request: HttpRequest) -> HttpResponse:

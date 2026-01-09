@@ -1,0 +1,118 @@
+{% extends 'home.html' %}
+{% block content %}
+    <br>
+    {{request}}
+    <br>
+    {% if specific_quiz == 'none' %}
+        <div class="down">
+            <div class="boxgrid">
+                {% for quiz in quizs %}
+                    <div class="box">
+                        <div class="qname">
+                            <h1 class="name">{{quiz.title}}</h1>
+                        </div>
+                        <div class="box">
+                            <div class="qbody">
+                                {% if quiz.pic %}
+                                <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
+                                {% else %}
+                                <p class="textpic">No Image</p>
+                                {% endif %}
+                            </div>
+                            <div class="tag-box">
+                                {% for tag in quiz.tags.all %}
+                                    <span class="tag">{{ tag.name }}</span>
+                                    {% empty %}
+                                    <span class="tag">Untagged</span>
+                                {% endfor %}
+                            </div>
+                            <form method="post" action="{% url 'quiz editor' %}">
+                                {% csrf_token %}
+                                <input hidden value="{{quiz.title}}" name="title">
+                                <button type="submit" class="gamebtn"></button>
+                            </form>
+                            <p class="btnt">Edit</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                <input hidden value="{{quiz.id}}" name="delete_quiz">
+                                <button type="submit" class="deletebtn"></button>
+                            </form>
+                            <p class="delt">Delete</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="down">
+            <div class="boxgrid">
+                <div class="box">
+                    <div class="qname">
+                        <h1 class="name">{{specific_quiz.title}}</h1>
+                    </div>
+                    <div class="box">
+                        <div class="qbody">
+                            {% if specific_quiz.pic %}
+                            <img src="{{specific_quiz.pic.url}}" alt="Quiz image" class="pic"/>
+                            {% else %}
+                            <p class="textpic">No Image</p>
+                            {% endif %}
+                        </div>
+                        <div class="tag-box">
+                            {% for tag in specific_quiz.tags.all %}
+                                <span class="tag">{{ tag.name }}</span>
+                                {% empty %}
+                                <span class="tag">Untagged</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if quiz_form.errors %}
+            <h2>Errors:</h2>
+            <p>{{quiz_form.errors}}</p>
+        {% endif %}
+        <h3>Name of Quiz</h3>
+        <p>{{quiz_form.title}}</p>
+        <br>
+        <h3>Choose a Picture</h3>
+        <p>{{quiz_form.pic}}</p>
+        <br>
+        <h3>Choose Tags</h3>
+        <p>{{quiz_form.tags}}</p>
+        <br>
+        <button id="AddQuestion" type="button">Add Question</button>
+        <br>
+        <div id="questionsContainer">
+            {% if type != 'Failed to make Quiz' %}
+            <div class="quiz_maker_question">
+                <h3>Question 1</h3>
+                <p>Question: <input required id="question_1" name="question_1" type="text"></p>
+                <p>Answer 1: <input required id="question_1answer1" name="question_1answer1" type="text"> Correct:<input id="question_1answer1checkbox" name="question_1answer1checkbox" value="correct" type="checkbox"></p>
+                <p>Answer 2: <input required id="question_1answer2" name="question_1answer2" type="text"> Correct:<input id="question_1answer2checkbox" name="question_1answer2checkbox" value="correct" type="checkbox"></p>
+                <p>Answer 3: <input required id="question_1answer3" name="question_1answer3" type="text"> Correct:<input id="question_1answer3checkbox" name="question_1answer3checkbox" value="correct" type="checkbox"></p>
+                <p>Answer 4: <input required id="question_1answer4" name="question_1answer4" type="text"> Correct:<input id="question_1answer4checkbox" name="question_1answer4checkbox" value="correct" type="checkbox"></p>
+            </div>
+            {% else %}
+                {% if type == 'Failed to make Quiz' %}
+                    {% for question_set in request %}
+                        <div class="quiz_maker_question">
+                            <h3>Question {{question_set.0}}</h3>
+                            <p>Question: <input required id="{{question_set.1}}" name="{{question_set.1}}" value="{{question_set.2}}" type="text"></p>
+                            <p>Answer 1: <input required id="{{question_set.3}}" name="{{question_set.3}}" value="{{question_set.4}}" type="text"> {% if question_set.5 == 'wrong' %} Correct:<input id="question_{{question_set.0}}answer1checkbox" name="question_{{question_set.0}}answer1checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question_set.0}}answer1checkbox" name="question_{{question_set.0}}answer1checkbox" value="correct" checked type="checkbox"></p> {% endif %}
+                            <p>Answer 2: <input required id="{{question_set.6}}" name="{{question_set.6}}" value="{{question_set.7}}" type="text"> {% if question_set.8 == 'wrong' %} Correct:<input id="question_{{question_set.0}}answer2checkbox" name="question_{{question_set.0}}answer2checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question_set.0}}answer2checkbox" name="question_{{question_set.0}}answer2checkbox" value="correct" checked type="checkbox"></p> {% endif %}
+                            <p>Answer 3: <input required id="{{question_set.9}}" name="{{question_set.9}}" value="{{question_set.10}}" type="text"> {% if question_set.11 == 'wrong' %} Correct:<input id="question_{{question_set.0}}answer3checkbox" name="question_{{question_set.0}}answer3checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question_set.0}}answer3checkbox" name="question_{{question_set.0}}answer3checkbox" value="correct" checked type="checkbox"></p> {% endif %}
+                            <p>Answer 4: <input required id="{{question_set.12}}" name="{{question_set.12}}" value="{{question_set.13}}" type="text"> {% if question_set.14 == 'wrong' %} Correct:<input id="question_{{question_set.0}}answer4checkbox" name="question_{{question_set.0}}answer4checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question_set.0}}answer4checkbox" name="question_{{question_set.0}}answer4checkbox" value="correct" checked type="checkbox"></p> {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <br>
+        <button type="submit">Create Quiz</button>
+    </form>
+    {% endif %}
+{% endblock %}
