@@ -104,7 +104,6 @@ def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
         check_user = UserQuizAttempt.objects.create(user=request.user, quiz=quiz)
     total = len(questions)
     outof = total * 10
-    choice_id = request.POST.get('choice_id')
     if request.method == 'POST':
         if check_user.is_completed:
             context = {"quiz": quiz,
@@ -130,10 +129,8 @@ def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
             return render(request, "Quizs/play.html", context)
         
         elif int(question_id) < total:
-            if check_user.attempt == total:
-                return redirect('play', quiz_id=quiz.id, question_id=check_user.attempt)
-            else:
-                return redirect('play',quiz_id=quiz.id, question_id=check_user.attempt, )
+            return redirect('play', quiz_id=quiz.id, question_id=check_user.attempt)
+            
         context = {"quiz": quiz,
                     "questions": questions,
                     "total": total, 'score': check_user.score,
@@ -157,13 +154,17 @@ def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
         right_answered = check_user.is_right
         outof = total * 10
         context = {'question': None,
-                   'score': score,'outof': outof,'right_answered': right_answered,'total': total, 'count': check_user.attempt, 'user_profile': user_profile, 'quiz': quiz}
+                   'score': score,
+                   'outof': outof,
+                   'right_answered': right_answered,
+                   'total': total,
+                   'count': check_user.attempt,
+                   'user_profile': user_profile,
+                   'quiz': quiz}
         return render(request, 'Quizs/play.html', context)
     
 @login_required(login_url='login')
 def play_action(request: HttpRequest, pick) -> HttpResponse:
-
-    
     ower = request.user
     cho = Quizzes.objects.get(id=pick)
     total = len(cho.questions_set.all())
@@ -185,7 +186,6 @@ def play_action(request: HttpRequest, pick) -> HttpResponse:
     except Choice.DoesNotExist:
         pass
     check_user.save()
-    
     return redirect('play', quiz_id=pick, question_id=check_user.attempt)
 
 
