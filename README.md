@@ -102,4 +102,5 @@ Created: Dec 29th, 2025 — Jan 12th, 2026
 
 ## License
 MIT — see LICENSE file for details
+![Screen Recording2 2026-01-12 at 10 18 42 AM](https://github.com/user-attachments/assets/9320f6bf-3a71-480a-b667-de341cdb9861)
 
