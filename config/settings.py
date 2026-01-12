@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^v8cp_ioucyh@9cf*m#x(66he!&t_d*0q*p5pch#64c9=^ag1!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['quizzma-cfbea8e23d2a.herokuapp.com']
 
 
 # Application definition
