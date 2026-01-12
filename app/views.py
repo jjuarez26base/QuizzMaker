@@ -659,9 +659,14 @@ def quizeditor_view(request: HttpRequest) -> HttpResponse:
                 question_list.append(question_set)
 
             new_quiz_form = EditQuizForm(request.POST, request.FILES, instance=quiz)
+            print()
+            print(new_quiz_form)
+            print()
             if new_quiz_form.is_valid():
                 quiz = new_quiz_form.save()
+                print('saved quiz')
             else:
+                print('did not save quiz')
                 pass
 
             counter_list_2.pop()
