@@ -1,110 +1,105 @@
-Quizzma
-Quizzma is a simplistic, dark-themed quiz management platform designed to help students study and prepare for school. By allowing users to create, edit, and take custom quizzes, Quizzma turns study material into an interactive experience.
+# Quizzma
 
-🚀 Features
-Unlimited Quiz Creation: Create as many quizzes as you need for any subject.
+A simple, dark-themed quiz management platform to help students create, edit, and take custom quizzes — fast.
 
-Full CRUD Functionality: Users can create, read, update, and delete their own quizzes.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](#) [![Python](https://img.shields.io/badge/python-3.8%2B-brightgreen)](#) [![Django](https://img.shields.io/badge/django-4.x-4B8BBE)](#)
 
-Gamified Profiles: Each user has a profile tracking their Points and a customizable Bio.
+---
 
-Admin Management Dashboard:
+## Table of Contents
+- Features
+- Tech Stack
+- Database Structure
+- Project Milestones
+- Installation
+- Usage
+- Credits
+- License
 
-Staff members can monitor site statistics.
+---
 
-Admins can delete any quiz on the platform.
+## Features
+- ✅ Unlimited quiz creation
+- ✅ Full CRUD for quizzes, questions, and choices
+- ✅ Gamified user profiles (points & bio)
+- ✅ Admin dashboard: site stats, manage quizzes & user activation
+- ✅ Mobile-responsive with sidebar navigation
+- ✅ Dark-mode friendly UI
 
-Admins can activate or deactivate user accounts directly from the dashboard.
+---
 
-Mobile Responsive: A sidebar-driven navigation system designed for both desktop and mobile comfort.
+## Tech Stack
+- Backend: Python, Django
+- Data: Django Models (Quizzes, Questions, Choices, Tags, UserProfile)
+- Frontend: HTML5, CSS3 (dark theme), JavaScript for interactivity
+- Tools: VS Code, Canva, Coolors, Gemini, GitHub Copilot
 
-🛠️ Tech Stack
-Backend
+---
 
-Python / Django: The core logic and server-side framework.
+## Database Structure (high level)
+- UserProfile — extends Django User: points, bio, avatar
+- Quiz — title, cover image, owner, tags, is_active
+- Question — belongs to Quiz, text, ordering
+- Choice — belongs to Question, text, is_correct
+- Tag — many-to-many with Quiz
 
-Django Models: Used for structured data storage (Quizzes, Questions, Choices, Tags, and UserProfiles).
+---
 
-Frontend
+## Project Milestones
+1. Planning — UX and data model definition  
+2. Design — dark-mode UI and responsive layout  
+3. Development — models, views, authentication, and admin tools  
+4. Testing — manual QA, iterative bug fixes
 
-HTML5 & CSS3: Custom styles featuring a dark-mode aesthetic for reduced eye strain.
+---
 
-JavaScript: Used for interactive UI elements like the sidebar and dynamic forms.
+## Installation & Setup
 
-Design & Tools
+Open a terminal (macOS):
 
-VS Code: Primary development environment.
-
-Canva & Coolers: Used for branding, logo design, and color palette selection.
-
-Gemini & Copilot: Utilized for brainstorming and code optimization.
-
-📊 Database Structure
-The system is built on a relational database with the following key models:
-
-UserProfile: Extends the default User model to include points, bios, and profile pictures.
-
-Quizzes: Stores the quiz title, cover image, owner, and associated tags.
-
-Questions & Choices: A one-to-many relationship allowing multiple questions per quiz and multiple choices per question.
-
-Tags: Allows for categorization and easy searching of study materials.
-
-🛣️ Project Milestones
-1. Planning Phase
-
-Brainstorming sessions to establish the "Quizzma" identity. We defined the basic layout, split backend and frontend responsibilities, and set our end goals for the user experience.
-
-2. Design
-
-Focused on a "simplistic" philosophy. We chose dark colors to ensure better comfort for students during long night-time study sessions.
-
-3. Development
-
-Backend: Focused on heavy lifting first (Models, Views, and Authentication).
-
-Frontend: Team collaboration on individual HTML pages and modular CSS.
-
-4. Testing
-
-Conducted through rigorous manual testing. Bugs were identified and fixed immediately in an iterative cycle to ensure stability.
-
-⚙️ Installation & Setup
-Clone the repository:
-
-Bash
+```bash
+# Clone
 git clone https://github.com/yourusername/quizzma.git
 cd quizzma
-Set up a virtual environment:
 
-Bash
+# Virtualenv
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-Install Django:
+source venv/bin/activate
 
-Bash
+# Dependencies
+pip install -r requirements.txt
+# or at minimum:
 pip install django
-Apply Migrations:
 
-Bash
+# Migrate & admin
 python manage.py makemigrations
 python manage.py migrate
-Create an Admin Account:
-
-Bash
 python manage.py createsuperuser
-Run the Server:
 
-Bash
+# Run server
 python manage.py runserver
-Access the site at http://127.0.0.1:8000/
 
-👥 Credits
-Jason & Jesuse: Backend architecture and heavy lifting.
+# Visit:
+# http://127.0.0.1:8000/
+```
 
-Angel: Backend support and logic.
+---
 
-Design & Frontend: Collaborative effort by the Quizzma team.
+## Usage
+- Admins: use the Django admin or the built-in dashboard to manage users and quizzes.
+- Users: sign up, create quizzes, add questions/choices, take quizzes and earn points.
 
-Created between Dec 29th, 2025 – Jan 12th, 2026.
+---
+
+## Credits
+- Jason & Jesuse — Backend architecture  
+- Angel — Backend support & logic  
+- Design & Frontend — Quizzma team
+
+Created: Dec 29th, 2025 — Jan 12th, 2026
+
+---
+
+## License
+MIT — see LICENSE file for details
 
