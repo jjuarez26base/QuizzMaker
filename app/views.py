@@ -73,20 +73,20 @@ def quiz_list(request: HttpRequest) -> HttpResponse:
     return render(request, "Quizs/all_quizzes.html", context)
 
 def search_quiz(request: HttpRequest) -> HttpResponse:
-    searched = "test"
-    print(request.method)
+    # searched = "test"
+    # print(request.method)
     if request.method == "POST":
         searched = request.POST['search']
         if request.user.is_authenticated:
             user_profile = UserProfile.objects.get(user=request.user)
         else:
             user_profile = 'no user profile'
-        tag_on_search = Tags.objects.get(name = searched)
-        quizs = Quizzes.objects.filter(tags = tag_on_search.id)
-        context = {"quizs": quizs, "user_profile": user_profile, "searched": True, "search_query": searched}
-        return render(request, "Quizs/SearchQuizzes.html", context)
-    # test
-    return HttpResponse(searched)
+        if Tags.objects.filter(name = searched).exists():
+            tag_on_search = Tags.objects.get(name = searched)
+            quizs = Quizzes.objects.filter(tags = tag_on_search.id)
+            context = {"quizs": quizs, "user_profile": user_profile, "searched": True, "search_query": searched}
+            return render(request, "Quizs/SearchQuizzes.html", context)
+    return redirect('quizs')
         
 
 

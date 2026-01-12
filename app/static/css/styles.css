@@ -338,16 +338,19 @@ ul li {
 
 /*Landing Page*/
 .intro{
+  justify-self: center;
+  text-align: center;
   display: grid;
   place-items: center;
   height: 100%;
+  width: 60vw;
 }
 .intro_p {
   display: flex;
   justify-self: center;
 }
 
-/* Removed duplicate positioning/styles to rely on unified card styles */
+
 
 
 
@@ -481,14 +484,14 @@ ul li {
   padding: 7px;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.05);
-  max-height: 140px; /* limit height so long bios don't overflow */
+  max-height: 140px; 
   overflow-y: auto;
-  white-space: pre-wrap; /* preserve newlines */
+  /* white-space: pre-wrap;  */
   word-break: break-word;
 }
 .profile-bio.expanded { max-height: none; }
 .bio-toggle{
-  display: none; /* JS will show it only when needed */
+  display: none; 
   position: absolute;
   right: 8px;
   bottom: 8px;
@@ -501,8 +504,12 @@ ul li {
   font-size: 0.85rem;
 }
 .bio-toggle:hover{ opacity: 0.95; transform: translateY(-1px); transition: .12s; }
+.search-results-heading{
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
 
-/* scrollbar styling for the bio */
 .profile-bio::-webkit-scrollbar { width: 10px; }
 .profile-bio::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
 .profile-bio{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.05) transparent; }

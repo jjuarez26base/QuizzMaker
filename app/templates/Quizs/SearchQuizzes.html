@@ -33,16 +33,17 @@
                                             <span class="tag">Untagged</span>
                                         {% endfor %}
                                     </div>
-                                    <form method="post" action="{% url 'play' quiz.id 0 %}">
-                                        {% csrf_token %}
-                                        <button class="gamebtn"></button>
-                                    </form>
-                                    <p class="btnt">Play</p>
-                                    <form method="post" action="{% url 'delete quiz' quiz.id %}">
-                                        {% csrf_token %}
-                                        <button class="deletebtn"></button>
-                                    </form>
-                                    <p class="delt">Delete</p> 
+                                    <div class="card-footer">
+                                        <form method="post" action="{% url 'play' quiz.id 0 %}">
+                                            {% csrf_token %}
+                                            <button class="gamebtn">Play</button>
+                                        </form>
+                                        <p class="btnt">Play</p>
+                                        <form method="post" action="{% url 'delete quiz' quiz.id %}">
+                                            {% csrf_token %}
+                                            <button class="deletebtn">Delete</button>
+                                        </form>
+                                    </div>
                             </div>
                         
                     {% else %}
@@ -65,9 +66,9 @@
                                 </div>
                                 <form method="post" action="{% url 'play' quiz.id 0 %}">
                                         {% csrf_token %}
-                                        <button class="gamebtn"></button>
+                                        <button class="gamebtn">Play</button>
                                     </form>
-                                <p class="btnt">Play</p>
+                                
                         </div>
                     {% endif%}
                     {% empty %}
