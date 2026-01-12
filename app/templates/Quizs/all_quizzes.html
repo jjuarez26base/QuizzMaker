@@ -1,11 +1,11 @@
 {% extends 'home.html' %}
 {% load static %}
 {% block content %}
-<div class="bar">
-    <form method="POST" action="{%url 'search' %}">
+<div class="bar ">
+    <form method="POST" action="{%url 'search' %}" class="search-form">
         {% csrf_token %}
-        <input type="search" placeholder="Search by tags..." aria-label="Search" name="search" class="search-input">
-        <button class="create-quiz-btn" type="submit" >Create New Quiz</button>
+        <input type="search" placeholder="Search by tags..." aria-label="Search" name="search" class="search-bar">
+        <button class="create-quiz-btn  search-button" type="submit" >Search</button>
     </form>
 </div>
     <div class="down">
@@ -16,34 +16,37 @@
                         <div class="qname">
                             <h1 class="name">{{quiz.title}}</h1>
                         </div>
-                        <div class="box">
-                            <div class="qbody">
-                                <form action="{% url 'quiz editor' %}" method="post" class="delete-form-top-right">
-                                    {% csrf_token %}
-                                    <input hidden value="{{quiz.pk}}" name="pk">
-                                    <input type="image" src="{% static '/images/editBTN.png'%}" alt="Edit" class="editbtn">
-                                </form>
-                                {% if quiz.pic %}
+
+                            <form action="{% url 'quiz editor' %}" method="post" class="delete-form-top-right">
+                                {% csrf_token %}
+                                <input hidden value="{{quiz.pk}}" name="pk">
+                                <input type="image" src="{% static '/images/editBTN.png'%}" alt="Edit" class="editbtn">
+                            </form>
+                            {% if quiz.pic %}
                                 <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
-                                {% else %}
+                            {% else %}
                                 <p class="textpic">No Image</p>
-                                {% endif %}
+                            {% endif %}
+
+                            <div class="tag-box">
+                                {% for tag in quiz.tags.all %}
+                                    <span class="tag">{{ tag.name }}</span>
+                                    
+                                {% empty %}
+                                    <span class="tag">Untagged</span>
+                                {% endfor %}
                             </div>
-                    
-                            <p>{{quiz_form.tags}}</p>
-                            <br>
-                            
-                            <form method="post" action="{% url 'play' quiz.id 0 %}">
-                                {% csrf_token %}
-                                <button class="gamebtn"></button>
-                            </form>
-                            <p class="btnt">Play</p>
-                            <form method="post" action="{% url 'delete quiz' quiz.id %}">
-                                {% csrf_token %}
-                                <button class="deletebtn"></button>
-                            </form>
-                            <p class="delt">Delete</p>
-                        </div>
+
+                            <div class="card-footer">
+                                <form method="post" action="{% url 'play' quiz.id 0 %}">
+                                    {% csrf_token %}
+                                    <button class="gamebtn">Play</button>
+                                </form>
+                                <form method="post" action="{% url 'delete quiz' quiz.id %}">
+                                    {% csrf_token %}
+                                    <button class="deletebtn">Delete</button>
+                                </form>
+                            </div>
                     </div>
                 
             {% else %}
@@ -51,14 +54,13 @@
                     <div class="qname">
                         <h1 class="name">{{quiz.title}}</h1>
                     </div>
-                    <div class="box">
-                        <div class="qbody">
-                            {% if quiz.pic %}
-                                <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
-                                {% else %}
-                                <p class="textpic">No Image</p>
-                                {% endif %}
-                        </div>
+
+                        {% if quiz.pic %}
+                            <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
+                        {% else %}
+                            <p class="textpic">No Image</p>
+                        {% endif %}
+
                         <div class="tag-box">
                             {% for tag in quiz.tags.all %}
                                 <span class="tag">{{ tag.name }}</span>
@@ -68,10 +70,9 @@
                         </div>
                         <form method="post" action="{% url 'play' quiz.id 0 %}">
                                 {% csrf_token %}
-                                <button class="gamebtn"></button>
+                                <button class="gamebtn">Play</button>
                             </form>
-                        <p class="btnt">Play</p>
-                    </div>
+                        
                 </div>
             {% endif%}
             {% empty %}

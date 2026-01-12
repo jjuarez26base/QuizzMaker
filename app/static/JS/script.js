@@ -5,16 +5,16 @@ const addQuestion = document.getElementById('AddQuestion');
 const cleanbtn = document.querySelector('.cleanbtn');
 const hider = document.querySelector('.hiddenornot');
 
-if (cleanbtn != None){
-   cleanbtn.addEventListener('click', function() {
-   hider.classList.toggle('hiddenornot');});
+if (cleanbtn && hider) {
+    cleanbtn.addEventListener('click', () => {
+        hider.classList.toggle('hiddenornot');
+    });
+}
 
-    const toggleSidebar = () => {
+const toggleSidebar = () => {
     sidebar.classList.toggle('hidden');
     menuicon.classList.toggle('rotated');
-    }
-
-}
+};
 
 
 
@@ -100,3 +100,34 @@ try {
   addQuestion.addEventListener('click', addQuestionFunction);
 } catch (error) {
 }
+
+// Show more / Show less for long bios
+function attachBioToggle() {
+    const bio = document.querySelector('.profile-bio');
+    if (!bio) return;
+    const btn = bio.querySelector('.bio-toggle');
+    if (!btn) return;
+
+    // Show toggle only if content overflows
+    const isOverflowing = bio.scrollHeight > bio.clientHeight + 2; // small tolerance
+    if (isOverflowing) {
+        btn.style.display = 'inline-block';
+    } else {
+        btn.style.display = 'none';
+        return;
+    }
+
+    // Remove previous handler if any to avoid double-binding
+    btn.replaceWith(btn.cloneNode(true));
+    const newBtn = bio.querySelector('.bio-toggle');
+
+    newBtn.addEventListener('click', () => {
+        const expanded = bio.classList.toggle('expanded');
+        newBtn.textContent = expanded ? 'Show less' : 'Show more';
+        newBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+}
+
+// run on load and on resize so it reacts to layout changes
+attachBioToggle();
+window.addEventListener('resize', attachBioToggle);
