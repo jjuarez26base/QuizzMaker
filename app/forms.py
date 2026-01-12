@@ -51,3 +51,7 @@ class EditQuizForm(forms.ModelForm):
     class Meta:
         model = Quizzes
         fields = ['title', 'pic', 'tags']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tags'].required = False

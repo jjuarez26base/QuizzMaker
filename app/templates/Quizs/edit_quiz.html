@@ -88,7 +88,7 @@
                 <div class="quiz_maker_question" id="question-{{question.0}}">
                     <div class="question-header">
                         <h3>Question {{question.0}}</h3>
-                        <button type="button" class="question-delete-btn" data-pk="{{ question.8 }}">Delete</button>
+                        <button type="button" class="question-delete-btn" onclick="deleteQuestion('{{question.0}}', '{{question.8}}')">Delete</button>
                     </div>
                     <div>
                         <p class="qrow">Question: <input required id="{{question.6}}" name="{{question.6}}" value="{{question.1.question.value}}" type="text"></p>
