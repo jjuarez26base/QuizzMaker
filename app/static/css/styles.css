@@ -58,9 +58,11 @@ aside.hidden {
   cursor: pointer;
   border: none;
   background: none;
-  width: 75px;
+  width: 50px;
   top: 15px;
   right: 0;
+  background-color: white;
+  border-radius: 30px;
 }
 .hiddenornot{
   display: none;
@@ -423,7 +425,7 @@ ul li {
 
 .bio-form{
   /* display: block; */
-  width: 220px;
+  width: 240px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   padding: 12px;
