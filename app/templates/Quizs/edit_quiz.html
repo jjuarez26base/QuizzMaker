@@ -6,17 +6,16 @@
             <div class="boxgrid">
                 {% for quiz in quizs %}
                     <div class="box">
+                        <div class="quizgrid"></div>
                         <div class="qname">
                             <h1 class="name">{{quiz.title}}</h1>
                         </div>
-                        <div class="box">
-                            <div class="qbody">
-                                {% if quiz.pic %}
+
+                            {% if quiz.pic %}
                                 <img src="{{quiz.pic.url}}" alt="Quiz image" class="pic"/>
-                                {% else %}
+                            {% else %}
                                 <p class="textpic">No Image</p>
-                                {% endif %}
-                            </div>
+                            {% endif %}
                             <div class="tag-box">
                                 {% for tag in quiz.tags.all %}
                                     <span class="tag">{{ tag.name }}</span>
@@ -24,20 +23,21 @@
                                     <span class="tag">Untagged</span>
                                 {% endfor %}
                             </div>
+                            <div class="card-footer">
                             <form method="post" action="{% url 'quiz editor' %}">
                                 {% csrf_token %}
                                 <input hidden value="{{quiz.pk}}" name="pk">
-                                <button type="submit" class="gamebtn"></button>
+                                <button type="submit" class="gamebtn">Edit</button>
                             </form>
-                            <p class="btnt">Edit</p>
+                           
                             <form method="post">
                                 {% csrf_token %}
                                 <input hidden value="{{quiz.id}}" name="delete_quiz">
-                                <button type="submit" class="deletebtn"></button>
+                                <button type="submit" class="deletebtn">Delete</button>
                             </form>
-                            <p class="delt">Delete</p>
-                        </div>
-                    </div>
+                            </div>
+                    </div>         
+                    
                 {% endfor %}
             </div>
         </div>
@@ -49,37 +49,60 @@
             <h2>Errors:</h2>
             <p>{{quiz_form.errors}}</p>
         {% endif %}
+        <div class="quizbox">
         <h3>Name of Quiz</h3>
-        <p>{{quiz_form.title}}</p>
+        <div class="qtitle">
+            {{ quiz_form.title }}
+        </div>
         <br>
         <h3>Picture</h3>
-        <p>{{quiz_form.pic}}</p>
+        <div class="picfile">
+            {{ quiz_form.pic }}
+        </div>
+        <div class="pic-preview">
+            {% if specific_quiz.pic %}
+                <img id="preview" src="{{ specific_quiz.pic.url }}" alt="Quiz image preview" class="pic"/>
+            {% else %}
+                <p class="textpic">No Image</p>
+            {% endif %}
+        </div>
         <br>
         <h3>Tags</h3>
-        <p>{{quiz_form.tags}}</p>
-        <!-- <br>
-        <button id="AddQuestion" type="button">Add Question</button>
-        <br> -->
+        <div class="tagotherbox">
+            {% for tag in all_tags %}
+                <label>
+                    <input type="checkbox" name="tags" value="{{ tag.id }}"
+                    <span class="tag">{{ tag.name }}</span>
+                </label>
+            {% empty %}
+                <span class="tag">No tags available</span>
+            {% endfor %}
+           
+        </div>
+            <button type="submit" class="newquizbtn">Update Quiz</button>
+    </div>
+        <br>
+        
         <div id="questionsContainer">
             {% for question in question_list %}
                 <div class="quiz_maker_question" id="question-{{question.0}}">
-                    <h3>Question {{question.0}}</h3>
-                    <div>
-                        <p>Question: <input required id="{{question.6}}" name="{{question.6}}" value="{{question.1.question.value}}" type="text"></p>
-                        <p>Answer 1: <input required id="{{question.7.0}}answer1" name="{{question.7.0}}answer1" value="{{question.2.text.value}}" type="text"> {% if question.2.is_correct.value == False %} Correct:<input id="question_{{question.0}}answer1checkbox" name="question_{{question.0}}answer1checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question.0}}answer1checkbox" name="question_{{question.0}}answer1checkbox" value="correct" checked type="checkbox"></p> {% endif %}
-                        <p>Answer 2: <input required id="{{question.7.1}}answer2" name="{{question.7.1}}answer2" value="{{question.3.text.value}}" type="text"> {% if question.3.is_correct.value == False %} Correct:<input id="question_{{question.0}}answer2checkbox" name="question_{{question.0}}answer2checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question.0}}answer2checkbox" name="question_{{question.0}}answer2checkbox" value="correct" checked type="checkbox"></p> {% endif %}
-                        <p>Answer 3: <input required id="{{question.7.2}}answer3" name="{{question.7.2}}answer3" value="{{question.4.text.value}}" type="text"> {% if question.4.is_correct.value == False %} Correct:<input id="question_{{question.0}}answer3checkbox" name="question_{{question.0}}answer3checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question.0}}answer3checkbox" name="question_{{question.0}}answer3checkbox" value="correct" checked type="checkbox"></p> {% endif %}
-                        <p>Answer 4: <input required id="{{question.7.3}}answer4" name="{{question.7.3}}answer4" value="{{question.5.text.value}}" type="text"> {% if question.5.is_correct.value == False %} Correct:<input id="question_{{question.0}}answer4checkbox" name="question_{{question.0}}answer4checkbox" value="correct" type="checkbox"></p> {% else %} Correct:<input id="question_{{question.0}}answer4checkbox" name="question_{{question.0}}answer4checkbox" value="correct" checked type="checkbox"></p> {% endif %}
-                        <input type="number" hidden name="pk" value="{{pk}}">
+                    <div class="question-header">
+                        <h3>Question {{question.0}}</h3>
+                        <button type="button" class="question-delete-btn" data-pk="{{ question.8 }}">Delete</button>
                     </div>
-                        <!-- <button type="button" onclick="deleteQuestion('{{question.0}}', '{{question.8}}')">
-                            Delete Question
-                        </button> -->
+                    <div>
+                        <p class="qrow">Question: <input required id="{{question.6}}" name="{{question.6}}" value="{{question.1.question.value}}" type="text"></p>
+                        <p class="qrow">Answer 1: <input required id="{{question.7.0}}answer1" name="{{question.7.0}}answer1" value="{{question.2.text.value}}" type="text"> {% if question.2.is_correct.value == False %} <label class="small-check">Correct:<input id="question_{{question.0}}answer1checkbox" name="question_{{question.0}}answer1checkbox" value="correct" type="checkbox"></label></p> {% else %} <label class="small-check">Correct:<input id="question_{{question.0}}answer1checkbox" name="question_{{question.0}}answer1checkbox" value="correct" checked type="checkbox"></label></p> {% endif %}
+                        <p class="qrow">Answer 2: <input required id="{{question.7.1}}answer2" name="{{question.7.1}}answer2" value="{{question.3.text.value}}" type="text"> {% if question.3.is_correct.value == False %} <label class="small-check">Correct:<input id="question_{{question.0}}answer2checkbox" name="question_{{question.0}}answer2checkbox" value="correct" type="checkbox"></label></p> {% else %} <label class="small-check">Correct:<input id="question_{{question.0}}answer2checkbox" name="question_{{question.0}}answer2checkbox" value="correct" checked type="checkbox"></label></p> {% endif %}
+                        <p class="qrow">Answer 3: <input required id="{{question.7.2}}answer3" name="{{question.7.2}}answer3" value="{{question.4.text.value}}" type="text"> {% if question.4.is_correct.value == False %} <label class="small-check">Correct:<input id="question_{{question.0}}answer3checkbox" name="question_{{question.0}}answer3checkbox" value="correct" type="checkbox"></label></p> {% else %} <label class="small-check">Correct:<input id="question_{{question.0}}answer3checkbox" name="question_{{question.0}}answer3checkbox" value="correct" checked type="checkbox"></label></p> {% endif %}
+                        <p class="qrow">Answer 4: <input required id="{{question.7.3}}answer4" name="{{question.7.3}}answer4" value="{{question.5.text.value}}" type="text"> {% if question.5.is_correct.value == False %} <label class="small-check">Correct:<input id="question_{{question.0}}answer4checkbox" name="question_{{question.0}}answer4checkbox" value="correct" type="checkbox"></label></p> {% else %} <label class="small-check">Correct:<input id="question_{{question.0}}answer4checkbox" name="question_{{question.0}}answer4checkbox" value="correct" checked type="checkbox"></label></p> {% endif %}
+                    </div>
                 </div>
             {% endfor %}
+            <input type="number" hidden name="pk" value="{{pk}}">
         </div>
         <br>
-        <button type="submit">Update Quiz</button>
+        <!-- <button type="submit">Update Quiz</button> -->
     </form>
     {% endif %}
 {% endblock %}

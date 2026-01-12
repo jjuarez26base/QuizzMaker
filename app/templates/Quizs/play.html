@@ -25,10 +25,12 @@
 {% else %}
   <div class="endofquiz">
     <h2>Quiz complete!</h2>
-    <p>Your score: {{ score }} out of {{ outof }}</p>
-    <p>Correct answers: {{ right_answered }} / {{ total }}</p>
-    <a href="{% url 'quizs' %}">Back to quizzes</a>
-    <a href="{% url 'startover' quiz.id %}">Play Again</a>
+    <p>Your score: <span class="score-value">{{ score }} / {{ outof }}</span></p>
+    <p>Correct answers: <span class="score-value">{{ right_answered }} / {{ total }}</span></p>
+    <div class="endofquiz-actions">
+      <a href="{% url 'quizs' %}" class="btn secondary">Back to quizzes</a>
+      <a href="{% url 'startover' quiz.id %}" class="btn primary">Play Again</a>
+    </div>
   </div>
 {% endif %}
 

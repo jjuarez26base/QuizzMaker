@@ -8,10 +8,11 @@
     <div class="profile-header">
         
         <div class="profile-pic2">
-            <form action="{% url 'newbio' %}" method="POST" enctype="multipart/form-data" class="hiddenornot">
+            <form action="{% url 'newbio' %}" method="POST" enctype="multipart/form-data" class="bio-form hiddenornot">
             {% csrf_token %}
-                {{form}}
-                <button type="submit">Save Bio</button>
+                <h4>Edit Bio</h4>
+                {{ form }}
+                <button type="submit" class="btn save-bio">Save</button>
             </form>
             {% if user_profile.pic %}
                 <img src="{{ user_profile.pic.url }}" alt="Profile Picture" class="profile-picture">
@@ -35,6 +36,7 @@
             <div class="profile-bio">
                     
                 <p class="profile-p2"><strong>Bio:</strong> {{ user_profile.bio|default:"No bio added yet." }}</p>
+                <button type="button" class="bio-toggle" aria-expanded="false">Show more</button>
             </div>
         </div>    
     </div>

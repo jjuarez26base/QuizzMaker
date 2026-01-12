@@ -73,20 +73,20 @@ def quiz_list(request: HttpRequest) -> HttpResponse:
     return render(request, "Quizs/all_quizzes.html", context)
 
 def search_quiz(request: HttpRequest) -> HttpResponse:
-    searched = "test"
-    print(request.method)
+    # searched = "test"
+    # print(request.method)
     if request.method == "POST":
         searched = request.POST['search']
         if request.user.is_authenticated:
             user_profile = UserProfile.objects.get(user=request.user)
         else:
             user_profile = 'no user profile'
-        tag_on_search = Tags.objects.get(name = searched)
-        quizs = Quizzes.objects.filter(tags = tag_on_search.id)
-        context = {"quizs": quizs, "user_profile": user_profile, "searched": True, "search_query": searched}
-        return render(request, "Quizs/SearchQuizzes.html", context)
-    # test
-    return HttpResponse(searched)
+        if Tags.objects.filter(name = searched).exists():
+            tag_on_search = Tags.objects.get(name = searched)
+            quizs = Quizzes.objects.filter(tags = tag_on_search.id)
+            context = {"quizs": quizs, "user_profile": user_profile, "searched": True, "search_query": searched}
+            return render(request, "Quizs/SearchQuizzes.html", context)
+    return redirect('quizs')
         
 
 
@@ -104,7 +104,6 @@ def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
         check_user = UserQuizAttempt.objects.create(user=request.user, quiz=quiz)
     total = len(questions)
     outof = total * 10
-    choice_id = request.POST.get('choice_id')
     if request.method == 'POST':
         if check_user.is_completed:
             context = {"quiz": quiz,
@@ -130,10 +129,8 @@ def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
             return render(request, "Quizs/play.html", context)
         
         elif int(question_id) < total:
-            if check_user.attempt == total:
-                return redirect('play', quiz_id=quiz.id, question_id=check_user.attempt)
-            else:
-                return redirect('play',quiz_id=quiz.id, question_id=check_user.attempt, )
+            return redirect('play', quiz_id=quiz.id, question_id=check_user.attempt)
+            
         context = {"quiz": quiz,
                     "questions": questions,
                     "total": total, 'score': check_user.score,
@@ -157,13 +154,17 @@ def play_view(request: HttpRequest, quiz_id, question_id) -> HttpResponse:
         right_answered = check_user.is_right
         outof = total * 10
         context = {'question': None,
-                   'score': score,'outof': outof,'right_answered': right_answered,'total': total, 'count': check_user.attempt, 'user_profile': user_profile, 'quiz': quiz}
+                   'score': score,
+                   'outof': outof,
+                   'right_answered': right_answered,
+                   'total': total,
+                   'count': check_user.attempt,
+                   'user_profile': user_profile,
+                   'quiz': quiz}
         return render(request, 'Quizs/play.html', context)
     
 @login_required(login_url='login')
 def play_action(request: HttpRequest, pick) -> HttpResponse:
-
-    
     ower = request.user
     cho = Quizzes.objects.get(id=pick)
     total = len(cho.questions_set.all())
@@ -185,7 +186,6 @@ def play_action(request: HttpRequest, pick) -> HttpResponse:
     except Choice.DoesNotExist:
         pass
     check_user.save()
-    
     return redirect('play', quiz_id=pick, question_id=check_user.attempt)
 
 
@@ -236,9 +236,10 @@ def userprofile(request: HttpRequest) -> HttpResponse:
 @login_required(login_url='login')
 def quizmaker_view(request: HttpRequest) -> HttpResponse:
     user_profile = UserProfile.objects.get(user=request.user)
+    all_tags = Tags.objects.all()
     if request.method == 'GET':
         quiz_form = MakeQuizForm()
-        context = {'request': request, "type": 'A get request', 'quiz_form': quiz_form, 'user_profile': user_profile}
+        context = {'request': request, "type": 'A get request', 'quiz_form': quiz_form, 'user_profile': user_profile, 'all_tags': all_tags}
     elif request.method == 'POST':
         question_names = []
         question_answers_name = []
@@ -405,7 +406,7 @@ def quizmaker_view(request: HttpRequest) -> HttpResponse:
                 question_form_list.append(question_form)
             return redirect('profile')
         
-        context = {'request': question_form_list, "type": 'Quiz was made', 'quiz_form': quiz_form, 'user_profile': user_profile}
+        context = {'request': question_form_list, "type": 'Quiz was made', 'quiz_form': quiz_form, 'user_profile': user_profile, 'all_tags': all_tags}
         if forms_good == False:
             question_names = []
             question_answers_name = []
@@ -494,20 +495,22 @@ def quizmaker_view(request: HttpRequest) -> HttpResponse:
                     checkbox_4_index = 'wrong'
                     question_set.append(checkbox_4_index)
                 question_list.append(question_set)
-            context = {'request': question_list, "type": 'Failed to make Quiz', 'quiz_form': quiz_form, 'user_profile': user_profile}
+            context = {'request': question_list, "type": 'Failed to make Quiz', 'quiz_form': quiz_form, 'user_profile': user_profile, 'all_tags': all_tags}
             return render(request, "Quizs/quiz_maker.html", context)
     else:
-        context = {'request': 'none', "type": 'No request', 'user_profile': user_profile}
+        context = {'request': 'none', "type": 'No request', 'user_profile': user_profile, 'all_tags': all_tags}
     return render(request, "Quizs/quiz_maker.html", context)
 
 @login_required(login_url='login')
 def quizeditor_view(request: HttpRequest) -> HttpResponse:
     user_profile = UserProfile.objects.get(user=request.user)
     user_quizzes = Quizzes.objects.filter(owner=request.user)
+    all_tags = Tags.objects.all()
     if request.method == 'GET':
         quiz = 'none'
         quiz_form = 'none'
-        context = {'specific_quiz': quiz, "user_profile": user_profile, "quizs": user_quizzes, 'quiz_form': quiz_form}
+        
+        context = {'specific_quiz': quiz, "user_profile": user_profile, "quizs": user_quizzes, 'quiz_form': quiz_form, 'all_tags': all_tags}
         return render(request, 'Quizs/edit_quiz.html', context)
 
     elif request.method == 'POST':
@@ -559,7 +562,7 @@ def quizeditor_view(request: HttpRequest) -> HttpResponse:
                 question_set.append(question_object.pk)
                 question_list.append(question_set)
             context = {'question_list': question_list, 'specific_quiz': quiz, "user_profile": user_profile, 
-                    "quizs": user_quizzes, 'quiz_form': quiz_form, 'questions': questions, 'pk': specific_quiz_pk}
+                    "quizs": user_quizzes, 'quiz_form': quiz_form, 'questions': questions, 'pk': specific_quiz_pk, 'all_tags': all_tags}
             
         elif quiz != 'none' and update_quiz == True:
             question_names = []
@@ -681,8 +684,29 @@ def quizeditor_view(request: HttpRequest) -> HttpResponse:
             return redirect('profile')
 
         else:
-            context = {'specific_quiz': quiz, "user_profile": user_profile}
+            context = {'specific_quiz': quiz, "user_profile": user_profile, 'all_tags': all_tags}
     return render(request, 'Quizs/edit_quiz.html', context)
+
+@staff_member_required
+def admin_view(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        user_to_toggle = get_object_or_404(User, id=request.POST['chips'])
+        user_to_toggle.is_active = not user_to_toggle.is_active
+        user_to_toggle.save()
+        return redirect('admin')
+    user_profile = UserProfile.objects.get(user=request.user)
+    total_users = UserProfile.objects.count()
+    total_quizzes = Quizzes.objects.count()
+    recent_quizzes = Quizzes.objects.order_by('-created_at')[:5]
+    all_users = User.objects.all()
+
+    context = {
+        "total_users": total_users,
+        "total_quizzes": total_quizzes,
+        "recent_quizzes": recent_quizzes,
+        "all_users": all_users,'user_profile': user_profile
+    }
+    return render(request, 'AdminPage.html', context)
 
 @staff_member_required
 def admin_view(request: HttpRequest) -> HttpResponse:
