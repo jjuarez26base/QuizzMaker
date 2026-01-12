@@ -536,7 +536,6 @@ def quizeditor_view(request: HttpRequest) -> HttpResponse:
             update_quiz = False
 
         if quiz != 'none' and update_quiz == False:
-            print('eeee')
             quiz_form = MakeQuizForm(initial={'title': quiz.title, 'pic': quiz.pic, 'owner': quiz.owner, 'tags': quiz.tags.all()})
             question_list = []
             counter = 1
@@ -660,14 +659,13 @@ def quizeditor_view(request: HttpRequest) -> HttpResponse:
             if new_quiz_form.is_valid():
                 quiz = new_quiz_form.save()
             else:
-                print('new_quiz_form is wrong')
+                pass
 
             counter_list_2.pop()
             for number in counter_list_2:
                 question_form = EditQuestionForm({'question': question_list[number][1]}, instance=questions[number])
                 if question_form.is_valid():
                     question_form.save()
-                    print('saved question')
                 choices = Choice.objects.filter(question=questions[number])
                 answer_counter = 3
                 correct_counter = 4
